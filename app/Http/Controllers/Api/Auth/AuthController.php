@@ -34,13 +34,13 @@ class AuthController extends Controller
      */
     public function login(AuthLoginRequest $request): Response|AuthResource
     {
-        $user = User::where('username', $request->username)->first();
+        $user = User::query()->where('username', $request->username)->first();
         if (!$user) {
-            return $this->code(Response::HTTP_CONFLICT);
+            abort(Response::HTTP_CONFLICT);
         }
 
         if (!Hash::check($request->password, $user->password)) {
-            return $this->code(Response::HTTP_CONFLICT);
+            abort(Response::HTTP_CONFLICT);
         }
 
         $apiToken = Str::random(128);

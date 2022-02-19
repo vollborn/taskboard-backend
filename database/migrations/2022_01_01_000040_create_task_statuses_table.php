@@ -12,15 +12,18 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('task_statuses', function (Blueprint $table) {
             $table->id();
 
-            $table->string('username')->unique();
-            $table->string('password');
-            $table->string('api_token')->nullable();
+            $table->foreignId('project_id')
+                ->references('id')
+                ->on('projects')
+                ->cascadeOnDelete();
 
-            $table->string('first_name');
-            $table->string('last_name');
+            $table->string('color', 10);
+            $table->string('name');
+
+            $table->unsignedInteger('order')->default(1);
 
             $table->timestamps();
         });
@@ -33,6 +36,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('task_statuses');
     }
 };

@@ -12,18 +12,12 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('permissions', function (Blueprint $table) {
+        Schema::create('tasks', function (Blueprint $table) {
             $table->id();
 
-            $table->string('name', 100);
-
-            $table->timestamps();
-        });
-
-        Schema::create('permission_user', function (Blueprint $table) {
-            $table->foreignId('permission_id')
+            $table->foreignId('project_id')
                 ->references('id')
-                ->on('permissions')
+                ->on('projects')
                 ->cascadeOnDelete();
 
             $table->foreignId('user_id')
@@ -31,7 +25,15 @@ return new class extends Migration {
                 ->on('users')
                 ->cascadeOnDelete();
 
-            $table->unique(['permission_id', 'user_id']);
+            $table->foreignId('task_status_id')
+                ->references('id')
+                ->on('task_statuses')
+                ->cascadeOnDelete();
+
+            $table->string('name');
+            $table->longText('description')->nullable();
+
+            $table->timestamps();
         });
     }
 
@@ -42,7 +44,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('permission_user');
-        Schema::dropIfExists('permissions');
+        Schema::dropIfExists('tasks');
     }
 };

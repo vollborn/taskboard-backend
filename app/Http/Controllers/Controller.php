@@ -11,13 +11,4 @@ use Symfony\Component\HttpFoundation\Response;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-
-    /**
-     * @param int $code
-     * @return \Illuminate\Http\Response
-     */
-    public function code(int $code = Response::HTTP_OK): \Illuminate\Http\Response
-    {
-        return response(null, $code);
-    }
 }

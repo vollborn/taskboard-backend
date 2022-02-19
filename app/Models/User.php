@@ -4,16 +4,21 @@ namespace App\Models;
 
 use App\Traits\Relations\BelongsToMany\BelongsToManyPermissions;
 use App\Traits\Relations\BelongsToMany\BelongsToManyUsers;
+use App\Traits\Relations\HasMany\HasManyTasks;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
     use HasFactory,
         Notifiable,
         BelongsToManyUsers,
-        BelongsToManyPermissions;
+        BelongsToManyPermissions,
+        HasManyTasks;
+
+    public const ADMIN_ID = 1;
 
     /**
      * The attributes that are mass assignable.
@@ -22,6 +27,8 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'username',
+        'first_name',
+        'last_name',
         'password',
     ];
 
@@ -33,4 +40,20 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
     ];
+
+    /**
+     * @param string $permission
+     * @return bool
+     */
+    public static function authorize(string $permission): bool
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        if (!$user) {
+            return false;
+        }
+
+        return $user->permissions()->where('name', $permission)->exists();
+    }
 }
