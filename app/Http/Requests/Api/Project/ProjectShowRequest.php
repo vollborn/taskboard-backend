@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Http\Requests\Api\Auth;
+namespace App\Http\Requests\Api\Project;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class AuthInfoRequest extends FormRequest
+/**
+ * @property-read int $projectId
+ */
+class ProjectShowRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,6 +27,8 @@ class AuthInfoRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [];
+        return [
+            'projectId' => 'required|int|exists:projects,id'
+        ];
     }
 }

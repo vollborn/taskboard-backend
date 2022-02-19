@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class TaskResource extends JsonResource
 {
     /**
      * @param \Illuminate\Http\Request $request
@@ -15,15 +15,17 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id,
 
-            'username'  => $this->username,
-            'firstName' => $this->first_name,
-            'lastName'  => $this->last_name,
+            'name'        => $this->name,
+            'description' => $this->description,
 
             'createdAt' => $this->created_at,
             'updatedAt' => $this->updated_at,
 
-            'permissions' => PermissionResource::collection($this->whenLoaded('permissions')),
-            'projects'    => ProjectResource::collection($this->whenLoaded('projects'))
+            'taskStatusId' => $this->task_status_id,
+            'taskStatus'   => new TaskStatusResource($this->whenLoaded('taskStatus')),
+
+            'userId' => $this->user_id,
+            'user'   => new UserResource($this->whenLoaded('user'))
         ];
     }
 }

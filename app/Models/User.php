@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\Relations\BelongsToMany\BelongsToManyPermissions;
+use App\Traits\Relations\BelongsToMany\BelongsToManyProjects;
 use App\Traits\Relations\BelongsToMany\BelongsToManyUsers;
 use App\Traits\Relations\HasMany\HasManyTasks;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,6 +17,7 @@ class User extends Authenticatable
         Notifiable,
         BelongsToManyUsers,
         BelongsToManyPermissions,
+        BelongsToManyProjects,
         HasManyTasks;
 
     public const ADMIN_ID = 1;
