@@ -25,14 +25,19 @@ class TaskController extends Controller
      */
     public function index(TaskIndexRequest $request): AnonymousResourceCollection
     {
-        $tasks = Task::query()
+        $query = Task::query()
             ->with(['user'])
             ->scopes(['accessible'])
-            ->where('project_id', $request->projectId)
-            ->paginate(
+            ->where('project_id', $request->projectId);
+
+        if ($request->perPage && $request->page) {
+            $tasks = $query->paginate(
                 perPage: $request->perPage,
                 page: $request->page
             );
+        } else {
+            $tasks = $query->get();
+        }
 
         return TaskResource::collection($tasks);
     }

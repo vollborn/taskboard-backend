@@ -20,10 +20,14 @@ class ManagementProjectController extends Controller
      */
     public function index(ManagementProjectIndexRequest $request): AnonymousResourceCollection
     {
-        $projects = Project::query()->paginate(
-            perPage: $request->perPage,
-            page: $request->page
-        );
+        if ($request->perPage && $request->page) {
+            $projects = Project::query()->paginate(
+                perPage: $request->perPage,
+                page: $request->page
+            );
+        } else {
+            $projects = Project::all();
+        }
 
         return ProjectResource::collection($projects);
     }

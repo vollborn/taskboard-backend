@@ -30,8 +30,8 @@ class ManagementUserIndexRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'page'    => 'required|integer',
-            'perPage' => 'required|integer'
+            'page'    => 'nullable|integer',
+            'perPage' => 'nullable|integer'
         ];
     }
 }

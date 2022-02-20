@@ -22,10 +22,14 @@ class ManagementUserController extends Controller
      */
     public function index(ManagementUserIndexRequest $request): AnonymousResourceCollection
     {
-        $users = User::query()->paginate(
-            perPage: $request->perPage,
-            page: $request->page
-        );
+        if ($request->perPage && $request->page) {
+            $users = User::query()->paginate(
+                perPage: $request->perPage,
+                page: $request->page
+            );
+        } else {
+            $users = User::all();
+        }
 
         return UserResource::collection($users);
     }

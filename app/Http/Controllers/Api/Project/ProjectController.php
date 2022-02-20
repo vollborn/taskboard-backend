@@ -19,12 +19,16 @@ class ProjectController extends Controller
      */
     public function index(ProjectIndexRequest $request): AnonymousResourceCollection
     {
-        $projects = Project::query()
-            ->scopes(['accessible'])
-            ->paginate(
+        $query = Project::query()->scopes(['accessible']);
+
+        if ($request->perPage && $request->page) {
+            $projects = $query->paginate(
                 perPage: $request->perPage,
                 page: $request->page
             );
+        } else {
+            $projects = $query->get();
+        }
 
         return ProjectResource::collection($projects);
     }

@@ -31,8 +31,8 @@ class TaskIndexRequest extends FormRequest
     {
         return [
             'projectId' => 'required|int|exists:projects,id',
-            'page'      => 'required|int',
-            'perPage'   => 'required|int'
+            'page'      => 'nullable|int',
+            'perPage'   => 'nullable|int'
         ];
     }
 }

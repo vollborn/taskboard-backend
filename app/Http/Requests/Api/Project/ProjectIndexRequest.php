@@ -29,8 +29,8 @@ class ProjectIndexRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'page'    => 'required|int',
-            'perPage' => 'required|int'
+            'page'    => 'nullable|int',
+            'perPage' => 'nullable|int'
         ];
     }
 }
