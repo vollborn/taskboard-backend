@@ -76,6 +76,7 @@ Route::middleware('auth:api')->group(static function () {
         Route::get('/show', [TaskController::class, 'show']);
         Route::post('/', [TaskController::class, 'store']);
         Route::put('/', [TaskController::class, 'update']);
+        Route::put('/status', [TaskController::class, 'updateStatus']);
         Route::delete('/', [TaskController::class, 'delete']);
     });
 

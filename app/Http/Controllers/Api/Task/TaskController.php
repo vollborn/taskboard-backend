@@ -8,6 +8,7 @@ use App\Http\Requests\Api\Task\TaskIndexRequest;
 use App\Http\Requests\Api\Task\TaskShowRequest;
 use App\Http\Requests\Api\Task\TaskStoreRequest;
 use App\Http\Requests\Api\Task\TaskUpdateRequest;
+use App\Http\Requests\Api\Task\TaskUpdateStatusRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Project;
 use App\Models\Task;
@@ -103,6 +104,30 @@ class TaskController extends Controller
 
         $task->name = $request->name;
         $task->description = $request->description;
+        $task->task_status_id = TaskStatus::getForProject($task->project, $request->taskStatusId);
+        $task->save();
+
+        $task->unsetRelation('project');
+
+        return new TaskResource($task);
+    }
+
+    /**
+     * @param \App\Http\Requests\Api\Task\TaskUpdateStatusRequest $request
+     * @return \App\Http\Resources\TaskResource
+     * @throws \Exception
+     */
+    public function updateStatus(TaskUpdateStatusRequest $request): TaskResource
+    {
+        $task = Task::query()
+            ->with(['project'])
+            ->scopes(['accessible'])
+            ->find($request->taskId);
+
+        if (!$task) {
+            abort(Response::HTTP_FORBIDDEN);
+        }
+
         $task->task_status_id = TaskStatus::getForProject($task->project, $request->taskStatusId);
         $task->save();
 
