@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Management\Permission\ManagementPermissionController;
 use App\Http\Controllers\Api\Management\Project\ManagementProjectController;
 use App\Http\Controllers\Api\Management\Project\Sync\ManagementProjectSyncController;
 use App\Http\Controllers\Api\Management\User\ManagementUserController;
@@ -33,6 +34,13 @@ Route::middleware('auth:api')->group(static function () {
     Route::prefix('/management')->group(static function () {
 
         /**
+         * Management Permissions
+         */
+        Route::prefix('/permissions')->group(static function () {
+            Route::get('/', [ManagementPermissionController::class, 'index']);
+        });
+
+        /**
          * Management Users
          */
         Route::prefix('/users')->group(static function () {
@@ -43,6 +51,7 @@ Route::middleware('auth:api')->group(static function () {
             Route::delete('/', [ManagementUserController::class, 'delete']);
 
             Route::put('/projects', [ManagementUserSyncController::class, 'projects']);
+            Route::put('/permissions', [ManagementUserSyncController::class, 'permissions']);
         });
 
         /**
