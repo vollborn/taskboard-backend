@@ -74,7 +74,10 @@ class ManagementUserController extends Controller
         $user->last_name = $request->lastName;
 
         if ($request->password) {
-            $user->password = Hash::make($request->password);
+            $user->forceFill([
+                'password'  => Hash::make($request->password),
+                'api_token' => null
+            ]);
         }
 
         $user->save();
