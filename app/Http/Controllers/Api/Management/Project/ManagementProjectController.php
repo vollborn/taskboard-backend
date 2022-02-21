@@ -20,13 +20,27 @@ class ManagementProjectController extends Controller
      */
     public function index(ManagementProjectIndexRequest $request): AnonymousResourceCollection
     {
+        $query = Project::query();
+
+        if ($request->hasUserId) {
+            $query->whereHas('users', static function ($query) use ($request) {
+                $query->where('id', $request->hasUserId);
+            });
+        }
+
+        if ($request->doesntHaveUserId) {
+            $query->whereDoesntHave('users', static function ($query) use ($request) {
+                $query->where('id', $request->doesntHaveUserId);
+            });
+        }
+
         if ($request->perPage && $request->page) {
-            $projects = Project::query()->paginate(
+            $projects = $query->paginate(
                 perPage: $request->perPage,
                 page: $request->page
             );
         } else {
-            $projects = Project::all();
+            $projects = $query->get();
         }
 
         return ProjectResource::collection($projects);

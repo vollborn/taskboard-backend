@@ -9,6 +9,8 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * @property-read int $page
  * @property-read int $perPage
+ * @property-read int|null $hasUserId
+ * @property-read int|null $doesntHaveUserId
  */
 class ManagementProjectIndexRequest extends FormRequest
 {
@@ -31,7 +33,10 @@ class ManagementProjectIndexRequest extends FormRequest
     {
         return [
             'page'    => 'nullable|integer',
-            'perPage' => 'nullable|integer'
+            'perPage' => 'nullable|integer',
+
+            'hasUserId'        => 'nullable|integer|exists:users,id',
+            'doesntHaveUserId' => 'nullable|integer|exists:users,id'
         ];
     }
 }
