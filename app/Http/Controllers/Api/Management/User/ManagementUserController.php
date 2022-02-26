@@ -22,13 +22,27 @@ class ManagementUserController extends Controller
      */
     public function index(ManagementUserIndexRequest $request): AnonymousResourceCollection
     {
+        $query = User::query();
+
+        if ($request->hasProjectId) {
+            $query->whereHas('projects', static function ($query) use ($request) {
+                $query->where('id', $request->hasProjectId);
+            });
+        }
+
+        if ($request->doesntHaveProjectId) {
+            $query->whereDoesntHave('projects', static function ($query) use ($request) {
+                $query->where('id', $request->doesntHaveProjectId);
+            });
+        }
+
         if ($request->perPage && $request->page) {
-            $users = User::query()->paginate(
+            $users = $query->paginate(
                 perPage: $request->perPage,
                 page: $request->page
             );
         } else {
-            $users = User::all();
+            $users = $query->get();
         }
 
         return UserResource::collection($users);

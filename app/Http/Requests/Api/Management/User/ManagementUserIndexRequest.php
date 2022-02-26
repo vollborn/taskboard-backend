@@ -7,8 +7,10 @@ use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * @property-read int $page
- * @property-read int $perPage
+ * @property-read int|null $page
+ * @property-read int|null $perPage
+ * @property-read int|null $hasProjectId
+ * @property-read int|null $doesntHaveProjectId
  */
 class ManagementUserIndexRequest extends FormRequest
 {
@@ -30,8 +32,10 @@ class ManagementUserIndexRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'page'    => 'nullable|integer',
-            'perPage' => 'nullable|integer'
+            'page'                => 'nullable|integer',
+            'perPage'             => 'nullable|integer',
+            'hasProjectId'        => 'nullable|integer|exists:projects,id',
+            'doesntHaveProjectId' => 'nullable|integer|exists:projects,id'
         ];
     }
 }
