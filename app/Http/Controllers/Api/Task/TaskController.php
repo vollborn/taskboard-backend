@@ -120,7 +120,7 @@ class TaskController extends Controller
     public function updateStatus(TaskUpdateStatusRequest $request): TaskResource
     {
         $task = Task::query()
-            ->with(['project'])
+            ->with(['project', 'user'])
             ->scopes(['accessible'])
             ->find($request->taskId);
 
