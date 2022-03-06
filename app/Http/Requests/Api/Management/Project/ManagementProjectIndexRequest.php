@@ -7,8 +7,8 @@ use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * @property-read int $page
- * @property-read int $perPage
+ * @property-read int|null $page
+ * @property-read int|null $perPage
  * @property-read int|null $hasUserId
  * @property-read int|null $doesntHaveUserId
  */

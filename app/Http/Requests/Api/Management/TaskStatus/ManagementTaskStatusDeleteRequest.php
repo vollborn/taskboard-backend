@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Requests\Api\Project;
+namespace App\Http\Requests\Api\Management\TaskStatus;
 
+use App\Models\Permission;
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 
 /**
- * @property-read int|null $page
- * @property-read int|null $perPage
+ * @property-read int $taskStatusId
  */
-class ProjectIndexRequest extends FormRequest
+class ManagementTaskStatusDeleteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -18,7 +18,7 @@ class ProjectIndexRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Auth::check();
+        return User::authorize(Permission::MANAGEMENT_PROJECT_UPDATE);
     }
 
     /**
@@ -29,8 +29,7 @@ class ProjectIndexRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'page'    => 'nullable|int',
-            'perPage' => 'nullable|int'
+            'taskStatusId' => 'required|integer|exists:task_statuses,id'
         ];
     }
 }

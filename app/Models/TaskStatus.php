@@ -16,8 +16,20 @@ class TaskStatus extends Model
 
     protected $fillable = [
         'name',
-        'color'
+        'color',
+        'order'
     ];
+
+    /**
+     * @param int $projectId
+     * @return int
+     */
+    public static function getNextOrder(int $projectId): int
+    {
+        return ((int) TaskStatus::query()
+                ->where('project_id', $projectId)
+                ->max('order')) + 1;
+    }
 
     /**
      * @throws \Exception

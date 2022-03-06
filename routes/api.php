@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Management\Permission\ManagementPermissionController;
 use App\Http\Controllers\Api\Management\Project\ManagementProjectController;
 use App\Http\Controllers\Api\Management\Project\Sync\ManagementProjectSyncController;
+use App\Http\Controllers\Api\Management\TaskStatus\ManagementTaskStatusController;
 use App\Http\Controllers\Api\Management\User\ManagementUserController;
 use App\Http\Controllers\Api\Management\User\Sync\ManagementUserSyncController;
 use App\Http\Controllers\Api\Project\ProjectController;
@@ -65,6 +66,17 @@ Route::middleware('auth:api')->group(static function () {
             Route::delete('/', [ManagementProjectController::class, 'delete']);
 
             Route::put('/users', [ManagementProjectSyncController::class, 'users']);
+        });
+
+        /**
+         * Management Task Statuses
+         */
+        Route::prefix('/task-statuses')->group(static function () {
+            Route::get('/', [ManagementTaskStatusController::class, 'index']);
+            Route::get('/show', [ManagementTaskStatusController::class, 'show']);
+            Route::post('/', [ManagementTaskStatusController::class, 'store']);
+            Route::put('/', [ManagementTaskStatusController::class, 'update']);
+            Route::delete('/', [ManagementTaskStatusController::class, 'delete']);
         });
 
     });
