@@ -2,8 +2,9 @@
 
 namespace App\Http\Requests\Api\Task;
 
+use App\Models\Permission;
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 
 /**
  * @property-read int $taskId
@@ -17,7 +18,7 @@ class TaskDeleteRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Auth::check();
+        return User::authorize(Permission::TASK_DELETE);
     }
 
     /**

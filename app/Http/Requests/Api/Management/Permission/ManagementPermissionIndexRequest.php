@@ -21,7 +21,8 @@ class ManagementPermissionIndexRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return User::authorize(Permission::MANAGEMENT_PROJECT_READ);
+        return User::authorize(Permission::MANAGEMENT_PROJECT_READ)
+            || User::authorize(Permission::MANAGEMENT_USER_READ);
     }
 
     /**
